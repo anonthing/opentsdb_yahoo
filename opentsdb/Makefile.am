@@ -110,7 +110,8 @@ tsdb_SRC := \
 	src/utils/DateTime.java \
 	src/utils/JSON.java \
 	src/utils/JSONException.java	\
-	src/utils/PluginLoader.java
+	src/utils/PluginLoader.java	\
+	src/tsd/setLogLevel.java
 
 tsdb_DEPS = \
 	$(ASYNCHBASE)	\

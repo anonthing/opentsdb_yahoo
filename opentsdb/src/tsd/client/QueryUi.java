@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.google.gwt.i18n.client.TimeZone;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -99,6 +100,8 @@ public class QueryUi implements EntryPoint, HistoryListener {
 
   private static final DateTimeFormat FULLDATE =
     DateTimeFormat.getFormat("yyyy/MM/dd-HH:mm:ss");
+  private static final DateTimeFormat TimezoneFormat = 
+    DateTimeFormat.getFormat("v");
 
   private final Label current_error = new Label();
 
@@ -815,6 +818,7 @@ public class QueryUi implements EntryPoint, HistoryListener {
   }
 
   private void refreshGraph() {
+  //  TimeZone sysTimeZone = TimeZone.getDefault(); //to get the client system time zone
     final Date start = start_datebox.getValue();
     if (start == null) {
       graphstatus.setText("Please specify a start time.");
@@ -854,6 +858,19 @@ public class QueryUi implements EntryPoint, HistoryListener {
       // a special parameter that the server will delete from the query.
       url.append("&ignore=" + nrequests++);
     }
+       String timezone = null;
+    String timezone_plus = null; //stores GMT + timezones
+    timezone = DateTimeFormat.getFormat("v").format(new Date());
+    if((!timezone.contains("+")) && timezone.contains("Etc") && (!timezone.contains("-"))){
+    	timezone_plus = timezone.substring(0, 7) + "+" + timezone.substring(7, timezone.length());
+    }
+    else if (timezone.contains("+")){
+    	timezone_plus = timezone.replace("+", "+");
+    }
+    else{
+    	timezone_plus = timezone.replace("-", "-");
+    }
+    	url.append("&tz=" +timezone_plus);
     if (!addAllMetrics(url)) {
       return;
     }
@@ -881,6 +898,7 @@ public class QueryUi implements EntryPoint, HistoryListener {
     }
     final String unencodedUri = url.toString();
     final String uri = URL.encode(unencodedUri);
+    //final String uri = unencodedUri;
     if (uri.equals(lastgraphuri)) {
       return;  // Don't re-request the same graph.
     } else if (pending_requests++ > 0) {

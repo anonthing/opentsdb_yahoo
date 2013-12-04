@@ -221,7 +221,19 @@ public class DateTime {
     if (tzname == null) {
       return;  // Use the default timezone.
     }
-    final TimeZone tz = DateTime.timezones.get(tzname);
+    String tzname_plus = null;
+    String ss = tzname.substring(7, tzname.length());
+    if((!tzname.contains("+")) && (!tzname.contains("-"))){
+	tzname_plus =new StringBuffer(tzname).insert(7, "+").toString();
+       tzname_plus = tzname_plus.replaceAll("\\s","");
+	//System.out.println("I'm here");
+    }
+    else {
+       tzname_plus = tzname;
+    }
+    
+    final TimeZone tz = DateTime.timezones.get(tzname_plus);
+    //System.out.println("tz=" +tz);
     if (tz != null) {
       fmt.setTimeZone(tz);
     } else {
@@ -239,9 +251,9 @@ public class DateTime {
    * @param tzname Name of the timezone to use
    * @throws IllegalArgumentException if tzname isn't a valid timezone name
    */
-  public static void setDefaultTimezone(final String tzname) {
+   public static void setDefaultTimezone(final String tzname) {
     final TimeZone tz = DateTime.timezones.get(tzname);
-    if (tz != null) {
+       if (tz != null) {
       TimeZone.setDefault(tz);
     } else {
       throw new IllegalArgumentException("Invalid timezone name: " + tzname);
