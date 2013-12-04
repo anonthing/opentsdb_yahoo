@@ -540,7 +540,6 @@ tsdb_SRC := \
 	src/tsd/TreeRpc.java	\
 	src/tsd/UniqueIdRpc.java	\
 	src/tsd/WordSplitter.java	\
-	src/tsd/setLogLevel.java	\
 	src/uid/NoSuchUniqueId.java	\
 	src/uid/NoSuchUniqueName.java	\
 	src/uid/UniqueId.java	\
@@ -549,7 +548,8 @@ tsdb_SRC := \
 	src/utils/DateTime.java \
 	src/utils/JSON.java \
 	src/utils/JSONException.java	\
-	src/utils/PluginLoader.java
+	src/utils/PluginLoader.java	\
+	src/tsd/setLogLevel.java
 
 tsdb_DEPS = \
 	$(ASYNCHBASE)	\
